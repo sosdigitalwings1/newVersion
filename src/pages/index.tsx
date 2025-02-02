@@ -2,11 +2,12 @@ import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import { HeroSection } from "components/HeroSection";
 import { Header } from "components/Header";
-import { ProductCarousel } from "components/Carousel/ProductCarousel";
+// import { ProductCarousel } from "components/Carousel/ProductCarousel";
 import { GenderCategories } from "components/GenderCategories";
 import { AdvertisingSection } from "components/advertisingSection";
 import { NewsSection } from "components/NewsSection";
 import { Footer } from "components/Footer";
+import { ProductCarousel } from "components/Product/ProductCarousel";
 
 // Define the data structure for a project
 // type Project = {
@@ -134,7 +135,7 @@ import { Footer } from "components/Footer";
         <AdvertisingSection />
         
         <NewsSection />
-      
+          
       <Footer />
     </div>
   );
