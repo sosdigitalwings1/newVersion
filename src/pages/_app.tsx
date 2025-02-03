@@ -5,11 +5,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "context/ThemeProvider";
+import { CartProvider } from "context/CartContext"; // Import CartProvider
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider>
-      <Component {...pageProps} />
+      <CartProvider> {/* Wrap with CartProvider */}
+        <Component {...pageProps} />
+      </CartProvider>
       <ToastContainer />
       <Analytics />
     </ThemeProvider>

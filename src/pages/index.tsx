@@ -8,6 +8,7 @@ import { AdvertisingSection } from "components/advertisingSection";
 import { NewsSection } from "components/NewsSection";
 import { Footer } from "components/Footer";
 import { ProductCarousel } from "components/Product/ProductCarousel";
+import { sampleProducts } from "components/Product/sampleProduct";
 
 // Define the data structure for a project
 // type Project = {
@@ -129,9 +130,8 @@ import { ProductCarousel } from "components/Product/ProductCarousel";
         {/* <section className="snap-start snap-mandatory max-h-screen overflow-clip">
           <Carousel data={data} />
         </section> */}
-        <ProductCarousel />
-        <GenderCategories />
-        
+        <ProductCarousel products={sampleProducts} />        <GenderCategories />
+                
         <AdvertisingSection />
         
         <NewsSection />

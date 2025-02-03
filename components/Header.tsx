@@ -1,23 +1,28 @@
 "use client";
 
-import Link from "next/link";
 import { FC, useEffect, useState } from "react";
-import { Search, MapPin, User, ShoppingBag, ChevronDown } from "lucide-react";
-import Image from "next/image";
-import { NavLink, TopBarLink } from "./NavLink";
+import { Search, MapPin, User, ShoppingBag, ChevronDown, Menu, X } from "lucide-react";
 
-const mainNavItems = ["MASTER", "CONQUEST", "SPIRIT", "ELEGANCE", "HERITAGE"];
+const mainNavItems = [
+  { name: "MASTER", href: "#" },
+  { name: "CONQUEST", href: "#" },
+  { name: "SPIRIT", href: "#", isNew: true },
+  { name: "ELEGANCE", href: "#" },
+  { name: "HERITAGE", href: "#" }
+];
 
 export const Header: FC = () => {
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [bgColor, setBgColor] = useState("bg-transparent"); // Start with transparent background
+  const [bgColor, setBgColor] = useState("bg-transparent");
   const [textColor, setTextColor] = useState("text-white");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const controlHeader = () => {
-    const heroSectionHeight = 800; // Adjust this based on your hero section height
-
-    if (window.scrollY < lastScrollY) {
+    const heroSectionHeight = window.innerHeight - 108;
+    const currentScroll = window.scrollY;
+if (window.scrollY < lastScrollY) {
       // Scrolling up
       setShowHeader(true);
       if (window.scrollY < heroSectionHeight) {
@@ -43,98 +48,126 @@ export const Header: FC = () => {
       }
     }
     setLastScrollY(window.scrollY);
+
+    // if (currentScroll > heroSectionHeight / 2) {
+    //   setBgColor("bg-white");
+    //   setTextColor("text-black");
+    // } else {
+    //   setBgColor("bg-transparent");
+    //   setTextColor("text-white");
+    // }
+
+    // setLastScrollY(currentScroll);
   };
 
   useEffect(() => {
     window.addEventListener("scroll", controlHeader);
-    
-    return () => {
-      window.removeEventListener("scroll", controlHeader);
-    };
+    return () => window.removeEventListener("scroll", controlHeader);
   }, [lastScrollY]);
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-transform duration-300 ${bgColor} ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${bgColor} ${
         showHeader ? "translate-y-0" : "-translate-y-full"
       }`}
     >
+      {/* Search Overlay */}
+      <div
+        className={`absolute inset-0 bg-white transition-transform duration-500 ${
+          isSearchOpen ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
+        <div className="max-w-[1920px] mx-auto px-8 h-full">
+          <div className="flex items-center justify-between h-[92px] border-b">
+            <input
+              type="text"
+              placeholder="Rechercher..."
+              className="w-full text-2xl bg-transparent border-none outline-none placeholder-gray-400"
+              autoFocus={isSearchOpen}
+            />
+            <button
+              onClick={() => setIsSearchOpen(false)}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Top Bar */}
-      <div className="border-b border-gray-100">
+      <div className={`border-b ${bgColor === "bg-transparent" ? "border-white/10" : "border-gray-100"}`}>
         <div className={`max-w-[1920px] mx-auto px-8 flex justify-between items-center h-[46px] ${textColor}`}>
           <div className="flex items-center space-x-8">
             <div className="relative group">
-              <button
-                aria-label="Change country"
-                className={`flex items-center text-[13px] font-light ${textColor} group-hover:text-black transition-colors duration-300`}
-              >
-                Canada
-                <ChevronDown className={`w-4 h-4 ml-1 ${textColor} group-hover:text-black transition-colors duration-300`} />
+              <button className="flex items-center text-[13px] font-light group-hover:opacity-70 transition-opacity">
+                Morocco
+                <ChevronDown className="w-4 h-4 ml-1" />
               </button>
             </div>
-            <TopBarLink href="#" className={textColor} isWhiteBackground={bgColor === "bg-white"}>
+            <a href="#" className="text-[13px] font-light hover:opacity-70 transition-opacity">
               Service client
-            </TopBarLink>
-            <TopBarLink href="#" className={textColor} isWhiteBackground={bgColor === "bg-white"}>
+            </a>
+            <a href="#" className="text-[13px] font-light hover:opacity-70 transition-opacity">
               Notre Univers
-            </TopBarLink>
-            </div>
+            </a>
+          </div>
 
           <div className="flex items-center space-x-8">
-            <TopBarLink href="#" className={textColor}>Trouvez votre SOS</TopBarLink>
+            <a href="#" className="text-[13px] font-light hover:opacity-70 transition-opacity">
+              Trouvez votre SOS
+            </a>
             <div className="flex items-center space-x-6">
-              <Search
-                aria-label="Search"
-                className={`w-[18px] h-[18px] cursor-pointer ${textColor} group-hover:text-black transition-colors duration-300`}
-              />
-              <MapPin
-                aria-label="Find a store"
-                className={`w-[18px] h-[18px] cursor-pointer ${textColor} group-hover:text-black transition-colors duration-300`}
-              />
-              <User
-                aria-label="User account"
-                className={`w-[18px] h-[18px] cursor-pointer ${textColor} group-hover:text-black transition-colors duration-300`}
-              />
-              <div className="relative">
-                <ShoppingBag
-                  aria-label="Shopping bag"
-                  className={`w-[18px] h-[18px] cursor-pointer ${textColor} group-hover:text-black transition-colors duration-300`}
-                />
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="hover:opacity-70 transition-opacity"
+              >
+                <Search className="w-[18px] h-[18px]" />
+              </button>
+              <button className="hover:opacity-70 transition-opacity">
+                <MapPin className="w-[18px] h-[18px]" />
+              </button>
+              <button className="hover:opacity-70 transition-opacity">
+                <User className="w-[18px] h-[18px]" />
+              </button>
+              <button className="relative hover:opacity-70 transition-opacity">
+                <ShoppingBag className="w-[18px] h-[18px]" />
                 <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] rounded-full w-[16px] h-[16px] flex items-center justify-center">
                   1
                 </span>
-              </div>
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Logo and Navigation */}
-      <div className="border-b border-gray-100">
-        <div className={`max-w-[1920px] mx-auto px-8 py-5 ${bgColor}`}>
+      {/* Main Navigation */}
+      <div className={`border-b ${bgColor === "bg-transparent" ? "border-white/10" : "border-gray-100"}`}>
+        <div className="max-w-[1920px] mx-auto px-8 py-5">
           <div className="flex flex-col items-center">
-            <Link href="/" className="mb-6">
-            <Image
+            <a href="/" className="mb-6 relative">
+              <img
                 src={bgColor === "bg-white" ? "/assets/LogoBlack.png" : "/assets/LogoWhite.png"}
-                alt="Sos"
-                width={200}
-                height={75}
-                className={`h-[35px] w-auto transition-opacity duration-300`}
-                priority
+                alt="SOS"
+                className="h-[35px] w-auto transition-opacity duration-300"
               />
-            </Link>
+            </a>
             <nav className="flex justify-center space-x-16">
-  {mainNavItems.map((item) => (
-    <NavLink
-      key={item}
-      href="#"
-      className={`text-[13px] tracking-[1.5px]`}
-      isWhiteBackground={bgColor === "bg-white"} // Pass the prop based on background color
-    >
-      {item}
-    </NavLink>
-  ))}
-</nav>
+              {mainNavItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={`relative text-[13px] tracking-[1.5px] hover:opacity-70 transition-opacity ${textColor}`}
+                >
+                  {item.name}
+                  {item.isNew && (
+                    <span className="absolute -top-3 -right-3 text-[10px] text-white bg-red-500 px-1.5 py-0.5 rounded-full">
+                      NEW
+                    </span>
+                  )}
+                </a>
+              ))}
+            </nav>
           </div>
         </div>
       </div>
