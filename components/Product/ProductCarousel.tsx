@@ -1,6 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
+// import { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef,useEffect, type RefObject } from "react"
+
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Product } from './types';
+
+type FilterOption = "all" | "new" | "bestseller"
 
 interface ProductCarouselProps {
   products: Product[];
@@ -9,6 +13,7 @@ interface ProductCarouselProps {
 export function ProductCarousel({ products }: ProductCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<FilterOption>("all")
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -67,12 +72,44 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
     return () => clearInterval(interval);
   }, [isHovered, isDragging, products.length]);
 
+  const filteredProducts = React.useMemo(() => {
+    switch (activeFilter) {
+      case "new":
+        return products.filter((product) => product.isNew)
+      case "bestseller":
+        return products.filter((product) =>
+          product.keySpecs.some((spec) => spec.value.toLowerCase().includes("bestseller")),
+        )
+      default:
+        return products
+    }
+  }, [products, activeFilter])
+
   return (
     <section 
-      className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8"
+      className="w-full bg-white py-16"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
+      <div className="max-w-[1400px] mx-auto px-8">
+      <div className="flex flex-col space-y-6 mb-16">
+          <div className="flex justify-center space-x-16 border-b border-[#e5e5e5]">
+            <FilterButton
+              filter="all"
+              label="GIFT SELECTION"
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+            />
+            <FilterButton filter="new" label="NEW" activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
+            <FilterButton
+              filter="bestseller"
+              label="BEST SELLERS"
+              activeFilter={activeFilter}
+              setActiveFilter={setActiveFilter}
+            />
+          </div>
+        </div>
+
       <div 
         ref={carouselRef}
         className="relative overflow-hidden"
@@ -80,77 +117,84 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
         onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
+        // onMouseEnter={() => setIsHovered(true)}
+        //     onMouseLeave={() => setIsHovered(false)}
       >
         <div
-          className="flex transition-transform duration-500 ease-out will-change-transform"
+          // className="flex transition-transform duration-500 ease-out will-change-transform"
+          // style={{
+          //   transform: `translateX(-${currentIndex * (100 / 3)}%)`,
+          // }}
           style={{
-            transform: `translateX(-${currentIndex * (100 / 3)}%)`,
+            transform: `translateX(-${currentIndex * (100 / filteredProducts.length)}%)`,
+            transition: isHovered ? "transform 0.3s ease-in-out" : "transform 0.7s ease-in-out",
           }}
+          className="flex transition-transform duration-700 ease-in-out"
         >
-          {products.map((product, idx) => (
+          {/* {products.map((product, idx) => ( */}
+          {filteredProducts.map((product) => (
             <div
               key={product.id}
-              className={`min-w-[33.333%] p-3 transition-all duration-500 ${
-                idx === currentIndex ? 'scale-100 opacity-100' : 'scale-95 opacity-80'
-              }`}
+              className={`min-w-[25%] px-4 transition-all duration-500 
+                
+              `}
             >
               <a 
                 href={`/products/${product.id}`} 
                 className="group block transform transition-all duration-500 hover:translate-y-[-4px]"
               >
-                <div className="relative aspect-[4/5] overflow-hidden bg-gray-50 rounded-lg shadow-sm group-hover:shadow-md transition-all duration-500">
-                  <img
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="object-cover w-full h-full transition-all duration-700 group-hover:scale-105"
-                  />
+                <div className="relative aspect-square mb-8 bg-[#f8f8f8]">
+                <img
+                        src={product.images[0] || "/placeholder.svg"}
+                        alt={product.name}
+                        className="object-contain w-full h-full p-8 transition-all duration-700 group-hover:scale-105"
+                      />
                   {product.isNew && (
-                    <div className="absolute top-3 left-3 transform -rotate-2">
-                      <span className="bg-black text-white px-3 py-1 text-xs tracking-wider rounded-sm">
-                        NOUVEAU
-                      </span>
-                    </div>
-                  )}
+                        <div className="absolute top-4 left-4">
+                          <span className="text-[#0066cc] text-sm font-medium">New</span>
+                        </div>
+                      )}
+
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
                 <div className="pt-4 space-y-2">
-                  <h3 className="font-light text-lg group-hover:text-gray-600 transition-colors duration-300">
-                    {product.name}
-                  </h3>
-                  <div className="space-y-1 text-sm text-gray-600">
-                    {product.keySpecs.map((spec, index) => (
-                      <p key={index} className="font-light">
-                        {spec.value}
-                      </p>
-                    ))}
-                  </div>
-                  <p className="font-medium text-base tracking-wide">{product.price}</p>
-                </div>
+                <h3 className="text-base font-medium tracking-wider text-black">{product.name}</h3>
+
+                <div className="text-sm text-[#666666] space-y-1">
+                        {product.keySpecs.map((spec, index) => (
+                          <p key={index} className="font-light">
+                            {spec.value}
+                          </p>
+                        ))}
+                      </div>
+                      <p className="text-base font-medium pt-2 text-black">{product.price}</p>
+                    </div>
               </a>
             </div>
           ))}
         </div>
 
         <button
-          onClick={prevSlide}
-          disabled={currentIndex === 0}
-          className={`absolute left-[-1rem] top-1/3 transform bg-white/90 p-3 rounded-full shadow-md backdrop-blur-sm 
-            transition-all duration-300 hover:scale-105 hover:bg-white
-            ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'opacity-90 hover:opacity-100'}`}
-          aria-label="Previous slide"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <button
-          onClick={nextSlide}
-          disabled={currentIndex >= products.length - 3}
-          className={`absolute right-[-1rem] top-1/3 transform bg-white/90 p-3 rounded-full shadow-md backdrop-blur-sm 
-            transition-all duration-300 hover:scale-105 hover:bg-white
-            ${currentIndex >= products.length - 3 ? 'opacity-50 cursor-not-allowed' : 'opacity-90 hover:opacity-100'}`}
-          aria-label="Next slide"
-        >
-          <ArrowRight className="w-5 h-5" />
-        </button>
+              onClick={prevSlide}
+              disabled={currentIndex === 0}
+              className={`absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2
+                transition-all duration-300 hover:bg-black hover:text-white
+                ${currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "opacity-90 hover:opacity-100"}`}
+              aria-label="Previous slide"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={nextSlide}
+              disabled={currentIndex === filteredProducts.length - 1}
+              className={`absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2
+                transition-all duration-300 hover:bg-black hover:text-white
+                ${currentIndex === filteredProducts.length - 1 ? "opacity-50 cursor-not-allowed" : "opacity-90 hover:opacity-100"}`}
+              aria-label="Next slide"
+            >
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
 
         <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-2">
           {Array.from({ length: products.length - 2 }).map((_, index) => (
@@ -167,6 +211,180 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
           ))}
         </div>
       </div>
+      </div>
     </section>
   );
 }
+const FilterButton = ({
+  filter,
+  label,
+  activeFilter,
+  setActiveFilter,
+}: {
+  filter: FilterOption
+  label: string
+  activeFilter: FilterOption
+  setActiveFilter: (filter: FilterOption) => void
+}) => (
+  <button
+    onClick={() => setActiveFilter(filter)}
+    className={`px-4 py-4 text-sm tracking-wider transition-all duration-300
+      ${
+        activeFilter === filter ? "border-b-2 border-black text-black font-medium" : "text-[#666666] hover:text-black"
+      }`}
+  >
+    {label}
+  </button>
+)
+
+
+
+
+// import React, { useState, useRef, type RefObject } from "react"
+// import { ArrowLeft, ArrowRight } from "lucide-react"
+// import type { Product } from "./types"
+
+// type FilterOption = "all" | "new" | "bestseller"
+
+// const ProductCarousel = ({ products }: { products: Product[] }) => {
+//   const [currentIndex, setCurrentIndex] = useState(0)
+//   const [activeFilter, setActiveFilter] = useState<FilterOption>("all")
+//   const [isHovered, setIsHovered] = useState(false)
+//   const carouselRef: RefObject<HTMLDivElement> = useRef(null)
+
+//   const nextSlide = () => {
+//     setCurrentIndex((prevIndex) => (prevIndex === products.length - 1 ? 0 : prevIndex + 1))
+//   }
+
+//   const prevSlide = () => {
+//     setCurrentIndex((prevIndex) => (prevIndex === 0 ? products.length - 1 : prevIndex - 1))
+//   }
+
+//   const filteredProducts = React.useMemo(() => {
+//     switch (activeFilter) {
+//       case "new":
+//         return products.filter((product) => product.isNew)
+//       case "bestseller":
+//         return products.filter((product) =>
+//           product.keySpecs.some((spec) => spec.value.toLowerCase().includes("bestseller")),
+//         )
+//       default:
+//         return products
+//     }
+//   }, [products, activeFilter])
+
+//   return (
+//     <section className="w-full bg-white py-16">
+//       <div className="max-w-[1400px] mx-auto px-8">
+//         <div className="flex flex-col space-y-6 mb-16">
+//           <div className="flex justify-center space-x-16 border-b border-[#e5e5e5]">
+//             <FilterButton
+//               filter="all"
+//               label="GIFT SELECTION"
+//               activeFilter={activeFilter}
+//               setActiveFilter={setActiveFilter}
+//             />
+//             <FilterButton filter="new" label="NEW" activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
+//             <FilterButton
+//               filter="bestseller"
+//               label="BEST SELLERS"
+//               activeFilter={activeFilter}
+//               setActiveFilter={setActiveFilter}
+//             />
+//           </div>
+//         </div>
+//         <div className="px-0">
+//           <div
+//             ref={carouselRef}
+//             className="relative overflow-hidden"
+//             onMouseEnter={() => setIsHovered(true)}
+//             onMouseLeave={() => setIsHovered(false)}
+//           >
+//             <div
+//               style={{
+//                 transform: `translateX(-${currentIndex * (100 / filteredProducts.length)}%)`,
+//                 transition: isHovered ? "transform 0.3s ease-in-out" : "transform 0.7s ease-in-out",
+//               }}
+//               className="flex transition-transform duration-700 ease-in-out"
+//             >
+//               {filteredProducts.map((product) => (
+//                 <div key={product.id} className="min-w-[25%] px-4 transition-all duration-500">
+//                   <div className="group">
+//                     <div className="relative aspect-square mb-8 bg-[#f8f8f8]">
+//                       <img
+//                         src={product.images[0] || "/placeholder.svg"}
+//                         alt={product.name}
+//                         className="object-contain w-full h-full p-8 transition-all duration-700 group-hover:scale-105"
+//                       />
+//                       {product.isNew && (
+//                         <div className="absolute top-4 left-4">
+//                           <span className="text-[#0066cc] text-sm font-medium">New</span>
+//                         </div>
+//                       )}
+//                     </div>
+//                     <div className="text-center space-y-3">
+//                       <h3 className="text-base font-medium tracking-wider text-black">{product.name}</h3>
+//                       <div className="text-sm text-[#666666] space-y-1">
+//                         {product.keySpecs.map((spec, index) => (
+//                           <p key={index} className="font-light">
+//                             {spec.value}
+//                           </p>
+//                         ))}
+//                       </div>
+//                       <p className="text-base font-medium pt-2 text-black">{product.price}</p>
+//                     </div>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//             <button
+//               onClick={prevSlide}
+//               disabled={currentIndex === 0}
+//               className={`absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2
+//                 transition-all duration-300 hover:bg-black hover:text-white
+//                 ${currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "opacity-90 hover:opacity-100"}`}
+//               aria-label="Previous slide"
+//             >
+//               <ArrowLeft className="w-4 h-4" />
+//             </button>
+//             <button
+//               onClick={nextSlide}
+//               disabled={currentIndex === filteredProducts.length - 1}
+//               className={`absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2
+//                 transition-all duration-300 hover:bg-black hover:text-white
+//                 ${currentIndex === filteredProducts.length - 1 ? "opacity-50 cursor-not-allowed" : "opacity-90 hover:opacity-100"}`}
+//               aria-label="Next slide"
+//             >
+//               <ArrowRight className="w-4 h-4" />
+//             </button>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   )
+// }
+
+// const FilterButton = ({
+//   filter,
+//   label,
+//   activeFilter,
+//   setActiveFilter,
+// }: {
+//   filter: FilterOption
+//   label: string
+//   activeFilter: FilterOption
+//   setActiveFilter: (filter: FilterOption) => void
+// }) => (
+//   <button
+//     onClick={() => setActiveFilter(filter)}
+//     className={`px-4 py-4 text-sm tracking-wider transition-all duration-300
+//       ${
+//         activeFilter === filter ? "border-b-2 border-black text-black font-medium" : "text-[#666666] hover:text-black"
+//       }`}
+//   >
+//     {label}
+//   </button>
+// )
+
+// export default ProductCarousel
+

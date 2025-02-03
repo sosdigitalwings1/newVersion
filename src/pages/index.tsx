@@ -140,4 +140,3 @@ import { sampleProducts } from "components/Product/sampleProduct";
     </div>
   );
 }
-
