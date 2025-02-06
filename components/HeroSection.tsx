@@ -1,9 +1,14 @@
 "use client";
 
 import { Info, Brain, ChevronDown, Volume2, VolumeX } from "lucide-react";
+import router from "next/router";
 import { FC, useState, useEffect } from "react";
 
-export const HeroSection: FC = () => {
+interface HeroSectionProps {
+  onDiscoverClick: () => void;
+}
+
+export const HeroSection: FC<HeroSectionProps> = ({ onDiscoverClick }) => {
   const [isMuted, setIsMuted] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -60,12 +65,18 @@ export const HeroSection: FC = () => {
               alliant légèreté exceptionnelle et durabilité incomparable.
             </p>
             <div className="flex gap-6">
-              <button className="bg-white text-black px-12 py-4 text-sm tracking-wider hover:bg-gray-100 transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-lg">
+              <button 
+                onClick={onDiscoverClick}
+                className="bg-white text-black px-12 py-4 text-sm tracking-wider hover:bg-gray-100 transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-lg"
+              >
                 DÉCOUVRIR LA COLLECTION
               </button>
-              <button className="border border-white/30 text-white px-12 py-4 text-sm tracking-wider hover:bg-white/10 transition-all duration-300">
-                EN SAVOIR PLUS
-              </button>
+              <button
+        onClick={() => router.push('/contact')}
+        className="border border-white/30 text-white px-12 py-4 text-sm tracking-wider hover:bg-white/10 transition-all duration-300"
+      >
+        EN SAVOIR PLUS
+      </button>
             </div>
           </div>
         </div>
@@ -103,16 +114,6 @@ export const HeroSection: FC = () => {
         <span className="text-white/80 text-sm font-light tracking-wider">FAIRE DÉFILER</span>
         <ChevronDown className="w-5 h-5 text-white/80 animate-bounce" />
       </div>
-
-      {/* Technical Specs Overlay */}
-      {/* <div className="absolute top-8 left-8 flex space-x-4">
-        <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-          <span className="text-white/90 text-sm font-light">TITANE GRADE 5</span>
-        </div>
-        <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-          <span className="text-white/90 text-sm font-light">CHRONOGRAPHE FLYBACK</span>
-        </div>
-      </div> */}
     </div>
   );
 };
