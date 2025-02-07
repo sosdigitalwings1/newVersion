@@ -1,17 +1,29 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
-import { Search, MapPin, User, ShoppingBag, ChevronDown, Menu, X } from "lucide-react";
+import { type FC, useEffect, useState } from "react";
+import {
+  Search,
+  MapPin,
+  User,
+  ShoppingBag,
+  ChevronDown,
+  X,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import register from "../src/pages/register";
+import Link from "next/link";
 
 const mainNavItems = [
   { name: "MASTER", href: "#" },
   { name: "CONQUEST", href: "#" },
   { name: "SPIRIT", href: "#", isNew: true },
   { name: "ELEGANCE", href: "#" },
-  { name: "HERITAGE", href: "#" }
+  { name: "HERITAGE", href: "#" },
 ];
 
 export const Header: FC = () => {
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [bgColor, setBgColor] = useState("bg-transparent");
@@ -19,51 +31,60 @@ export const Header: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  const controlHeader = () => {
-    const heroSectionHeight = window.innerHeight - 108;
-    const currentScroll = window.scrollY;
-if (window.scrollY < lastScrollY) {
-      // Scrolling up
-      setShowHeader(true);
-      if (window.scrollY < heroSectionHeight) {
-        // If in the hero section
-        setBgColor("bg-transparent"); // Keep transparent
-        setTextColor("text-white"); // Keep text white
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const handleProfileClick = () => {
+    if (isClient) {
+      const isRegistered = localStorage.getItem("userToken");
+      if (isRegistered) {
+        router.push("/profile");
       } else {
-        // Scrolling past hero section
-        setBgColor("bg-white"); // Change to white background
-        setTextColor("text-black"); // Change text color
-      }
-    } else {
-      // Scrolling down
-      setShowHeader(false);
-      if (window.scrollY < heroSectionHeight) {
-        // If still in the hero section
-        setBgColor("bg-transparent"); // Keep transparent when scrolling down
-        setTextColor("text-white"); // Keep text white
-      } else {
-        // Scrolling past the hero section
-        setBgColor("bg-white"); // Change to white background
-        setTextColor("text-black"); // Change text color
+        router.push("/register");
       }
     }
-    setLastScrollY(window.scrollY);
+  };
 
-    // if (currentScroll > heroSectionHeight / 2) {
-    //   setBgColor("bg-white");
-    //   setTextColor("text-black");
-    // } else {
-    //   setBgColor("bg-transparent");
-    //   setTextColor("text-white");
-    // }
-
-    // setLastScrollY(currentScroll);
+  const controlHeader = () => {
+    if (typeof window !== "undefined") {
+      const heroSectionHeight = window.innerHeight - 108;
+      const currentScroll = window.scrollY;
+      if (currentScroll < lastScrollY) {
+        // Scrolling up
+        setShowHeader(true);
+        if (currentScroll < heroSectionHeight) {
+          // If in the hero section
+          setBgColor("bg-transparent");
+          setTextColor("text-white");
+        } else {
+          // Scrolling past hero section
+          setBgColor("bg-white");
+          setTextColor("text-black");
+        }
+      } else {
+        // Scrolling down
+        setShowHeader(false);
+        if (currentScroll < heroSectionHeight) {
+          // If still in the hero section
+          setBgColor("bg-transparent");
+          setTextColor("text-white");
+        } else {
+          // Scrolling past the hero section
+          setBgColor("bg-white");
+          setTextColor("text-black");
+        }
+      }
+      setLastScrollY(currentScroll);
+    }
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", controlHeader);
-    return () => window.removeEventListener("scroll", controlHeader);
-  }, [lastScrollY]);
+    if (typeof window !== "undefined") {
+      window.addEventListener("scroll", controlHeader);
+      return () => window.removeEventListener("scroll", controlHeader);
+    }
+  }, [lastScrollY, controlHeader]); // Added controlHeader to dependencies
 
   return (
     <header
@@ -96,8 +117,14 @@ if (window.scrollY < lastScrollY) {
       </div>
 
       {/* Top Bar */}
-      <div className={`border-b ${bgColor === "bg-transparent" ? "border-white/10" : "border-gray-100"}`}>
-        <div className={`max-w-[1920px] mx-auto px-8 flex justify-between items-center h-[46px] ${textColor}`}>
+      <div
+        className={`border-b ${
+          bgColor === "bg-transparent" ? "border-white/10" : "border-gray-100"
+        }`}
+      >
+        <div
+          className={`max-w-[1920px] mx-auto px-8 flex justify-between items-center h-[46px] ${textColor}`}
+        >
           <div className="flex items-center space-x-8">
             <div className="relative group">
               <button className="flex items-center text-[13px] font-light group-hover:opacity-70 transition-opacity">
@@ -105,18 +132,27 @@ if (window.scrollY < lastScrollY) {
                 <ChevronDown className="w-4 h-4 ml-1" />
               </button>
             </div>
-            <a href="#" className="text-[13px] font-light hover:opacity-70 transition-opacity">
+            <Link
+              href="#"
+              className="text-[13px] font-light hover:opacity-70 transition-opacity"
+            >
               Service client
-            </a>
-            <a href="#" className="text-[13px] font-light hover:opacity-70 transition-opacity">
+            </Link>
+            <Link
+              href="#"
+              className="text-[13px] font-light hover:opacity-70 transition-opacity"
+            >
               Notre Univers
-            </a>
+            </Link>
           </div>
 
           <div className="flex items-center space-x-8">
-            <a href="#" className="text-[13px] font-light hover:opacity-70 transition-opacity">
+            <Link
+              href="#"
+              className="text-[13px] font-light hover:opacity-70 transition-opacity"
+            >
               Trouvez votre SOS
-            </a>
+            </Link>
             <div className="flex items-center space-x-6">
               <button
                 onClick={() => setIsSearchOpen(true)}
@@ -127,7 +163,10 @@ if (window.scrollY < lastScrollY) {
               <button className="hover:opacity-70 transition-opacity">
                 <MapPin className="w-[18px] h-[18px]" />
               </button>
-              <button className="hover:opacity-70 transition-opacity">
+              <button
+                onClick={handleProfileClick}
+                className="hover:opacity-70 transition-opacity"
+              >
                 <User className="w-[18px] h-[18px]" />
               </button>
               <button className="relative hover:opacity-70 transition-opacity">
@@ -142,19 +181,27 @@ if (window.scrollY < lastScrollY) {
       </div>
 
       {/* Main Navigation */}
-      <div className={`border-b ${bgColor === "bg-transparent" ? "border-white/10" : "border-gray-100"}`}>
+      <div
+        className={`border-b ${
+          bgColor === "bg-transparent" ? "border-white/10" : "border-gray-100"
+        }`}
+      >
         <div className="max-w-[1920px] mx-auto px-8 py-5">
           <div className="flex flex-col items-center">
-            <a href="/" className="mb-6 relative">
+            <Link href="/" className="mb-6 relative">
               <img
-                src={bgColor === "bg-white" ? "/assets/LogoBlack.png" : "/assets/LogoWhite.png"}
+                src={
+                  bgColor === "bg-white"
+                    ? "/assets/LogoBlack.png"
+                    : "/assets/LogoWhite.png"
+                }
                 alt="SOS"
                 className="h-[35px] w-auto transition-opacity duration-300"
               />
-            </a>
+            </Link>
             <nav className="flex justify-center space-x-16">
               {mainNavItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
                   href={item.href}
                   className={`relative text-[13px] tracking-[1.5px] hover:opacity-70 transition-opacity ${textColor}`}
@@ -165,7 +212,7 @@ if (window.scrollY < lastScrollY) {
                       NEW
                     </span>
                   )}
-                </a>
+                </Link>
               ))}
             </nav>
           </div>
