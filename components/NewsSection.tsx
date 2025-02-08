@@ -6,7 +6,7 @@ import { Navigation, Autoplay, EffectFade } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
-
+import Image from 'next/image';
 interface NewsItem {
   id: string;
   image: string;
@@ -128,7 +128,7 @@ export function NewsSection() {
           <SwiperSlide key={item.id}>
             <article className="group cursor-pointer h-full bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500">
               <div className="overflow-hidden relative aspect-[16/10]">
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

@@ -1,12 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
-
+import Image from 'next/image';
 export function GenderCategories() {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[1920px] mx-auto px-4 md:px-8 py-16">
       <div className="relative group cursor-pointer ">
         <div className="overflow-hidden">
-          <img
+          <Image
             src="https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=800&h=1000&fit=crop&auto=format"
             alt="Montres Homme"
             className="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105"
@@ -25,7 +25,7 @@ export function GenderCategories() {
 
       <div className="relative group cursor-pointer">
         <div className="overflow-hidden">
-          <img
+          <Image
             src="/assets/girlsWach.webp"
             alt="Montres Femme"
             className="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105"

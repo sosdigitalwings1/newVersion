@@ -21,7 +21,7 @@ export default function ContactPage() {
       <main>
         {/* Hero Section */}
         <div className="relative h-[70vh] bg-gray-900 overflow-hidden">
-          <img
+          <Image
             src="/assets/shop.webp"
             alt="Collection Banner"
             className="w-full h-full object-cover opacity-70 transform scale-105 transition-transform duration-10000 hover:scale-100"

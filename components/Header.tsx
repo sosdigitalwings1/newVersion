@@ -1,5 +1,5 @@
 "use client";
-
+import Image from 'next/image';
 import { type FC, useEffect, useState } from "react";
 import {
   Search,
@@ -189,7 +189,7 @@ export const Header: FC = () => {
         <div className="max-w-[1920px] mx-auto px-8 py-5">
           <div className="flex flex-col items-center">
             <Link href="/" className="mb-6 relative">
-              <img
+              <Image
                 src={
                   bgColor === "bg-white"
                     ? "/assets/LogoBlack.png"

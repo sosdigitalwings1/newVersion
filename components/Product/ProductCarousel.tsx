@@ -3,7 +3,7 @@ import React, { useState, useRef,useEffect, type RefObject } from "react"
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Product } from './types';
-
+import Image from 'next/image';
 type FilterOption = "all" | "new" | "bestseller"
 
 interface ProductCarouselProps {
@@ -144,7 +144,7 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
                 className="group block transform transition-all duration-500 hover:translate-y-[-4px]"
               >
                 <div className="relative aspect-square mb-8 bg-[#f8f8f8]">
-                <img
+                <Image
                         src={product.images[0] || "/placeholder.svg"}
                         alt={product.name}
                         className="object-contain w-full h-full p-8 transition-all duration-700 group-hover:scale-105"

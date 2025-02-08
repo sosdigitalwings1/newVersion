@@ -6,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "components/ui/carousel";
+import Image from 'next/image';
 interface Product {
   id: string;
   name: string;
@@ -123,7 +124,7 @@ export function ProductCarousel() {
                 <div className="group relative flex flex-col space-y-4">
                   {/* Image */}
                   <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
-                    <img
+                    <Image
                       src={product.image}
                       alt={product.name}
                       className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
