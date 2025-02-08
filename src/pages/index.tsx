@@ -9,6 +9,7 @@ import { NewsSection } from "components/NewsSection";
 import { Footer } from "components/Footer";
 import { ProductCarousel } from "components/Product/ProductCarousel";
 import { sampleProducts } from "components/Product/sampleProduct";
+import router from "next/router";
 
 // Define the data structure for a project
 // type Project = {
@@ -126,11 +127,12 @@ import { sampleProducts } from "components/Product/sampleProduct";
         <title>SOS Digital Wings</title>
       </Head>
       <Header/>
-        <HeroSection/>
+      <HeroSection onDiscoverClick={() => router.push("/collection/products")} />
         {/* <section className="snap-start snap-mandatory max-h-screen overflow-clip">
           <Carousel data={data} />
         </section> */}
-        <ProductCarousel products={sampleProducts} />        <GenderCategories />
+        <ProductCarousel products={sampleProducts} />        
+        <GenderCategories />
                 
         <AdvertisingSection />
         
