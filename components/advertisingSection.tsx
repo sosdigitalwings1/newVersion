@@ -11,7 +11,7 @@ export function AdvertisingSection() {
 
           {/* Background video */}
           <video
-            src="/assets/videos/Slow.mp4" // Ensure the path is correct
+            src="/assets/videos/Advert.mp4" // Ensure the path is correct
             autoPlay
             loop
             muted

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Watch } from 'types';
-import Image from 'next/image';
+
 interface ProductGridProps {
   watches: Watch[];
 }
@@ -11,7 +11,7 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ watches }) => {
       {watches.map((watch) => (
         <div key={watch.id} className="group cursor-pointer">
           <div className="relative aspect-square overflow-hidden">
-            <Image
+            <img
               src={watch.imageUrl}
               alt={watch.name}
               className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"

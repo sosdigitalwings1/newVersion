@@ -2,7 +2,6 @@
 import { X } from 'lucide-react';
 import { Product } from './Product/types';
 import { useRouter } from 'next/router'; // Import useRouter from Next.js
-import Image from 'next/image'; 
 
 interface AddToCartModalProps {
   product: Product;
@@ -47,13 +46,11 @@ export function AddToCartModal({
 
           <div className="flex items-center space-x-4 border-t border-b border-gray-100 py-4">
             <div className="w-24 h-24 bg-gray-50 rounded-lg overflow-hidden">
-            <Image
-  src={product.images[0]} // Use the Image component
-  alt={product.name}
-  width={500} // Specify the width (adjust as necessary)
-  height={500} // Specify the height (adjust as necessary)
-  className="w-full h-full object-cover" // Keep the same classes for styling
-/>
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h3 className="font-light text-lg">{product.name}</h3>

@@ -1,3 +1,27 @@
+/* Add this to your global styles or component styles */  
+.hero-slide {  
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;  
+}  
+
+.hero-slide-enter {  
+  opacity: 0;  
+  transform: translateY(20px);  
+}  
+
+.hero-slide-enter-active {  
+  opacity: 1;  
+  transform: translateY(0);  
+}  
+
+.hero-slide-exit {  
+  opacity: 1;  
+  transform: translateY(0);  
+}  
+
+.hero-slide-exit-active {  
+  opacity: 0;  
+  transform: translateY(-20px);  
+}
 .main {
   display: flex;
   flex-direction: column;

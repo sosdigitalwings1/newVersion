@@ -132,8 +132,7 @@ import router from "next/router";
           <Carousel data={data} />
         </section> */}
         <ProductCarousel products={sampleProducts} />        
-        <GenderCategories />
-                
+        <GenderCategories  />
         <AdvertisingSection />
         
         <NewsSection />
