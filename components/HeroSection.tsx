@@ -266,5 +266,6 @@ export const HeroSection: FC<HeroSectionProps> = ({ onDiscoverClick }) => {
         <ChevronDown className="w-5 h-5 text-white/80 animate-bounce" />
       </div>
     </div>
+    // dddd
   );
 };
