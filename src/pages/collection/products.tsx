@@ -6,12 +6,12 @@ import { Header } from "components/Header";
 import { Filters } from "components/Filters";
 import { FilterState } from "types";
 import { watches } from "data/watches";
-import { SlidersHorizontal, ChevronRight } from "lucide-react";
+import { SlidersHorizontal} from "lucide-react";
 import { Footer } from "components/Footer";
 import { ProductGrid } from "components/ProductGrid";
 import { ProductCarousel } from "components/Product/ProductCarousel";
-import { featuredProducts } from "data/featuredProducts";
 import { sampleProducts } from "components/Product/sampleProduct";
+import Image from 'next/image';
 
 export default function WatchCollection() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -58,7 +58,7 @@ export default function WatchCollection() {
       <main>
         {/* Hero Banner */}
         <div className="relative h-[70vh] bg-gray-900 overflow-hidden">
-          <img
+          <Image
             src="/assets/shop.webp"
             alt="Collection Banner"
             className="w-full h-full object-cover opacity-70 transform scale-105 transition-transform duration-10000 hover:scale-100"

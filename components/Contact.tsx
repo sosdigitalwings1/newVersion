@@ -1,11 +1,9 @@
 "use client";
 
 import Head from "next/head";
-import { ChevronRight } from "lucide-react";
-import { Header } from "components/Header";
+import Header from "components/Header";
 import { Footer } from "components/Footer";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function ContactPage() {
   return (
@@ -21,7 +19,7 @@ export default function ContactPage() {
       <main>
         {/* Hero Section */}
         <div className="relative h-[70vh] bg-gray-900 overflow-hidden">
-          <img
+          <Image
             src="/assets/shop.webp"
             alt="Collection Banner"
             className="w-full h-full object-cover opacity-70 transform scale-105 transition-transform duration-10000 hover:scale-100"

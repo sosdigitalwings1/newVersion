@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ArrowLeft, ArrowRight, Star } from "lucide-react";
 import { Product } from "./types";
+import Image from 'next/image';
 
 type FilterOption = "all" | "new" | "bestseller";
 
@@ -135,7 +136,7 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
                   className="group block"
                 >
                   <div className="relative aspect-[4/5] mb-8 bg-white rounded-2xl overflow-hidden shadow-sm transition-all duration-500 group-hover:shadow-xl">
-                    <img
+                    <Image
                       src={product.images[0] || "/placeholder.svg"}
                       alt={product.name}
                       className="object-cover w-full h-full transition-all duration-700 group-hover:scale-105"

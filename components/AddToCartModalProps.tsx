@@ -1,13 +1,14 @@
 // components/AddToCartModal.tsx
-import { X } from 'lucide-react';
-import { Product } from './Product/types';
-import { useRouter } from 'next/router'; // Import useRouter from Next.js
+import { X } from "lucide-react";
+import { Product } from "./Product/types";
+import { useRouter } from "next/router"; // Import useRouter from Next.js
+import Image from "next/image";
 
 interface AddToCartModalProps {
   product: Product;
   isOpen: boolean;
   onClose: () => void;
-  
+
   onContinueShopping: () => void;
 }
 
@@ -24,7 +25,7 @@ export function AddToCartModal({
 
   const handleViewCart = () => {
     onClose(); // Close the modal
-    router.push('/cart'); // Navigate to the cart page
+    router.push("/cart"); // Navigate to the cart page
   };
 
   return (
@@ -41,12 +42,13 @@ export function AddToCartModal({
           <h2 className="text-2xl font-light text-center">Ajouté au panier</h2>
 
           <p className="text-gray-600 text-center text-sm">
-            Votre produit a été ajouté à votre panier. Vous pouvez visualiser votre commande, ou la compléter avec un produit complémentaire.
+            Votre produit a été ajouté à votre panier. Vous pouvez visualiser
+            votre commande, ou la compléter avec un produit complémentaire.
           </p>
 
           <div className="flex items-center space-x-4 border-t border-b border-gray-100 py-4">
             <div className="w-24 h-24 bg-gray-50 rounded-lg overflow-hidden">
-              <img
+              <Image
                 src={product.images[0]}
                 alt={product.name}
                 className="w-full h-full object-cover"

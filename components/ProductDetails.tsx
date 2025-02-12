@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, Heart, Share2, ZoomIn } from 'lucide-react';
+import Image from 'next/image';
 
 interface ProductDetailsProps {
   product: {
@@ -53,7 +54,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           {/* Image Gallery */}
           <div className="space-y-6">
             <div className="relative aspect-square overflow-hidden bg-gray-100 rounded-lg">
-              <img
+              <Image
                 src={productImages[selectedImage]}
                 alt={product.name}
                 className="w-full h-full object-cover"

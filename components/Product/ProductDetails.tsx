@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronDown, Heart, Share2, ZoomIn, Clock, Watch, Droplet, Shield, Plus, Minus } from 'lucide-react';
 import { Product } from './types';
+import Image from 'next/image';
 
 import { useCart } from 'context/CartContext';
 import { ProductCarousel } from './ProductCarousel';
@@ -113,7 +114,7 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
               role="img"
               aria-label={`${product.name} - View ${selectedImage + 1}`}
             >
-              <img
+              <Image
                 src={product.images[selectedImage]}
                 alt={`${product.name} - View ${selectedImage + 1}`}
                 className={`w-full h-full object-cover transition-transform duration-500 ${
@@ -155,7 +156,7 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
                   aria-selected={selectedImage === index}
                   aria-label={`View ${index + 1}`}
                 >
-                  <img
+                  <Image
                     src={image}
                     alt={`${product.name} view ${index + 1}`}
                     className="w-full h-full object-cover"
