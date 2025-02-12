@@ -144,8 +144,13 @@
 //   )
 // }
 
-import type { CartItem } from "../types/cart"
+"use client"
+
 import { useCart } from "../context/CartContext"
+import { Minus, Plus, Trash2 } from "lucide-react"
+import Image from "next/image"
+import { useState, useEffect } from "react"
+import type { CartItem } from "../types/cart"
 
 interface CartSummaryProps {
   items: CartItem[]
@@ -153,20 +158,60 @@ interface CartSummaryProps {
 
 export function CartSummary({ items }: CartSummaryProps) {
   const { removeFromCart, updateQuantity, getSubtotal, getTotal } = useCart()
-  const total = items.reduce((sum, item) => {
+  const [cartItems, setCartItems] = useState<CartItem[]>(items)
+
+  useEffect(() => {
+    setCartItems(items)
+  }, [items])
+
+  const handleRemoveFromCart = (item: CartItem) => {
+    removeFromCart(item.product.id)
+  }
+
+  const handleUpdateQuantity = (item: CartItem, quantity: number) => {
+    updateQuantity(item.product.id, quantity)
+  }
+
+  const total = cartItems.reduce((sum, item) => {
     const price = Number.parseFloat(item.product.price.replace(/[^0-9.]/g, ""))
     return sum + price * item.quantity
   }, 0)
 
   return (
     <div>
-      {items.map((item) => (
-        <div key={item.product.id}>
-          {item.product.name} - Quantity: {item.quantity} - Price:{" "}
-          <p className="text-sm text-gray-600">{Number.parseFloat(item.product.price).toFixed(2)} CAD</p>
+      {cartItems.map((item) => (
+        <div key={item.product.id} className="flex items-center justify-between py-2 border-b border-gray-200">
+          <div className="flex items-center">
+            <Image
+              src={item.product.images[0] || "/placeholder.svg"}
+              alt={item.product.name}
+              width={50}
+              height={50}
+              className="rounded-md"
+            />
+            <div className="ml-4">
+              <p className="text-gray-900 font-medium">{item.product.name}</p>
+              <p className="text-sm text-gray-600">Price: ${Number.parseFloat(item.product.price).toFixed(2)} CAD</p>
+            </div>
+          </div>
+          <div className="flex items-center">
+            <button onClick={() => handleUpdateQuantity(item, item.quantity - 1)} disabled={item.quantity === 1}>
+              <Minus className="h-5 w-5 text-gray-600 hover:text-red-500 cursor-pointer" />
+            </button>
+            <span className="mx-2">{item.quantity}</span>
+            <button onClick={() => handleUpdateQuantity(item, item.quantity + 1)}>
+              <Plus className="h-5 w-5 text-gray-600 hover:text-green-500 cursor-pointer" />
+            </button>
+            <button onClick={() => handleRemoveFromCart(item)} className="ml-2">
+              <Trash2 className="h-5 w-5 text-gray-600 hover:text-red-500 cursor-pointer" />
+            </button>
+          </div>
         </div>
       ))}
-      <div>Total: ${total.toFixed(2)}</div>
+      <div className="mt-4">
+        <p className="text-gray-900 font-medium text-lg">Subtotal: ${getSubtotal().toFixed(2)}</p>
+        <p className="text-gray-900 font-medium text-lg">Total: ${getTotal().toFixed(2)}</p>
+      </div>
     </div>
   )
 }

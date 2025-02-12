@@ -175,3 +175,4 @@ export function useCart() {
   return context
 }
 
+export default CartContext
