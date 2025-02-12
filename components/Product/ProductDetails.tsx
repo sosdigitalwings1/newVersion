@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronDown, Heart, Share2, ZoomIn, Clock, Watch, Droplet, Shield, Plus, Minus } from 'lucide-react';
 import { Product } from './types';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { useCart } from 'context/CartContext';
 import { ProductCarousel } from './ProductCarousel';
@@ -72,14 +73,14 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <a 
+            <Link
               href="/" 
               className="flex items-center text-gray-800 hover:text-gray-600 transition-colors group"
               aria-label="Back to collection"
             >
               <ChevronLeft className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1" />
               <span className="text-sm tracking-wide">Back to collection</span>
-            </a>
+            </Link>
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setIsWishlistActive(!isWishlistActive)}
