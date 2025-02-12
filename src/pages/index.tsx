@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import { HeroSection } from "components/HeroSection";
-import { Header } from "components/Header";
+import Header from "components/Header";
 // import { ProductCarousel } from "components/Carousel/ProductCarousel";
 import { GenderCategories } from "components/GenderCategories";
 import { AdvertisingSection } from "components/advertisingSection";
