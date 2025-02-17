@@ -172,10 +172,10 @@ export function CartSummary({ items }: CartSummaryProps) {
     updateQuantity(item.product.id, quantity)
   }
 
-  const total = cartItems.reduce((sum, item) => {
-    const price = Number.parseFloat(item.product.price.replace(/[^0-9.]/g, ""))
-    return sum + price * item.quantity
-  }, 0)
+  // const total = cartItems.reduce((sum, item) => {
+  //   const price = Number.parseFloat(item.product.price.replace(/[^0-9.]/g, ""))
+  //   return sum + price * item.quantity
+  // }, 0)
 
   return (
     <div>

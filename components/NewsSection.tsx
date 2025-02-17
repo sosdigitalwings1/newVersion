@@ -179,19 +179,19 @@ import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/effect-fade"
 
-interface NewsItem {
-  id: string
-  image: string
-  title: string
-  description: string
-  date: string
-  readTime: string
-  category: string
-}
+// interface NewsItem {
+//   id: string
+//   image: string
+//   title: string
+//   description: string
+//   date: string
+//   readTime: string
+//   category: string
+// }
 
-const newsItems: NewsItem[] = [
-  // ... news items remain unchanged
-]
+// const newsItems: NewsItem[] = [
+//   // ... news items remain unchanged
+// ]
 
 export function NewsSection() {
   const prevRef = useRef(null)

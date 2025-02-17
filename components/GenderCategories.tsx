@@ -80,7 +80,8 @@ export function GenderCategories() {
         <div className="absolute inset-0 overflow-hidden">
           <Image
             src="https://plus.unsplash.com/premium_photo-1728582543415-f3acc737f1fe?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="Montres Homme"
+            // fill alt="Montres Homme"
+            fill alt='no image'
             layout="fill"
             objectFit="cover"
             className="transition-all duration-700 group-hover:scale-110"

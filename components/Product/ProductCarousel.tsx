@@ -137,8 +137,10 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
                 >
                   <div className="relative aspect-[4/5] mb-8 bg-white rounded-2xl overflow-hidden shadow-sm transition-all duration-500 group-hover:shadow-xl">
                     <Image
+                      
                       src={product.images[0] || "/placeholder.svg"}
-                      alt={product.name}
+                      fill alt={product.name}
+                      // fill alt={'no image'}
                       className="object-cover w-full h-full transition-all duration-700 group-hover:scale-105"
                     />
                     {product.isNew && (

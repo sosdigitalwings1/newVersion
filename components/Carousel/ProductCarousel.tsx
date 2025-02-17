@@ -32,6 +32,7 @@ const products: Product[] = [
       material: "Inoxydable et lunette en céramique",
     },
     price: "5 700,00 CAD",
+    
   },
   {
     id: "2",
