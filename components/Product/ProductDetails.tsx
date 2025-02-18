@@ -118,6 +118,8 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
               <Image
                 src={product.images[selectedImage]}
                 alt={`${product.name} - View ${selectedImage + 1}`}
+                width={800}
+                height={1000}
                 className={`w-full h-full object-cover transition-transform duration-500 ${
                   isZoomed ? 'scale-150' : 'hover:scale-105'
                 }`}
@@ -160,6 +162,8 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
                   <Image
                     src={image}
                     alt={`${product.name} view ${index + 1}`}
+                    width={200}
+                    height={200}
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
