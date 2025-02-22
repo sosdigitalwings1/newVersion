@@ -15,6 +15,8 @@ export const ProductGrid: React.FC<ProductGridProps> = ({ watches }) => {
             <Image
               src={watch.imageUrl}
               alt={watch.name}
+              width={500} 
+                height={500}
               className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
             />
           </div>
