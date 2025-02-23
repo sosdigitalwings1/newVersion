@@ -414,7 +414,7 @@ export const HeroSection: FC<HeroSectionProps> = ({ onDiscoverClick }) => {
   const currentHero = heroSlides[currentSlide]
 
   return (
-    <div className="relative h-[calc(120vh-108px)] overflow-hidden">
+    <div className="relative h-screen overflow-hidden">
       {heroSlides.map((slide, index) => (
         <div
           key={index}
@@ -447,34 +447,36 @@ export const HeroSection: FC<HeroSectionProps> = ({ onDiscoverClick }) => {
       </div>
 
       <div className="absolute inset-0 z-30">
-        <div className="max-w-[1920px] mx-auto px-8 h-full flex items-center">
+        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
           <div
             className={`text-white max-w-2xl transition-all duration-1000 transform ${
               isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
             }`}
           >
-            <div className="mb-6">
-              <span className="text-sm tracking-[0.3em] text-gray-300">NOUVELLE COLLECTION</span>
+            <div className="mb-4 sm:mb-6">
+              <span className="text-xs sm:text-sm tracking-[0.3em] text-gray-300">NOUVELLE COLLECTION</span>
             </div>
-            <h1 className="font-extralight mb-6">
-              <span className="text-7xl tracking-wide block mb-2 leading-tight">
+            <h1 className="font-extralight mb-4 sm:mb-6">
+              <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide block mb-2 leading-tight">
                 {currentHero.product.name.split(" ")[0]}
               </span>
-              <span className="text-7xl tracking-wide block leading-tight">
+              <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-wide block leading-tight">
                 {currentHero.product.name.split(" ").slice(1).join(" ")}
               </span>
             </h1>
-            <p className="text-xl font-light mb-12 text-gray-200">{currentHero.product.description}</p>
-            <div className="flex gap-6">
+            <p className="text-base sm:text-lg md:text-xl font-light mb-6 sm:mb-12 text-gray-200">
+              {currentHero.product.description}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
               <button
                 onClick={onDiscoverClick}
-                className="bg-white text-black px-12 py-4 text-sm tracking-wider hover:bg-gray-100 transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-lg"
+                className="bg-white text-black px-8 sm:px-12 py-3 sm:py-4 text-sm tracking-wider hover:bg-gray-100 transition-all duration-300 transform hover:translate-y-[-2px] hover:shadow-lg"
               >
                 DÉCOUVRIR LA COLLECTION
               </button>
               <button
                 onClick={() => router.push("/contact")}
-                className="border border-white/30 text-white px-12 py-4 text-sm tracking-wider hover:bg-white/10 transition-all duration-300"
+                className="border border-white/30 text-white px-8 sm:px-12 py-3 sm:py-4 text-sm tracking-wider hover:bg-white/10 transition-all duration-300"
               >
                 EN SAVOIR PLUS
               </button>
@@ -483,44 +485,46 @@ export const HeroSection: FC<HeroSectionProps> = ({ onDiscoverClick }) => {
         </div>
       </div>
 
-      <div className="absolute left-8 bottom-8 z-30 flex items-center space-x-4">
+      <div className="absolute left-4 sm:left-8 bottom-4 sm:bottom-8 z-30 flex items-center space-x-2 sm:space-x-4">
         {heroSlides.map((_, index) => (
           <button
             key={index}
-            className={`w-12 h-0.5 transition-all duration-300 ${currentSlide === index ? "bg-white" : "bg-white/30"}`}
+            className={`w-8 sm:w-12 h-0.5 transition-all duration-300 ${currentSlide === index ? "bg-white" : "bg-white/30"}`}
             onClick={() => setCurrentSlide(index)}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
 
-      <div className="absolute bottom-8 right-8 z-30 flex space-x-4">
+      <div className="absolute bottom-4 sm:bottom-8 right-4 sm:right-8 z-30 flex space-x-2 sm:space-x-4">
         <button
           onClick={() => setIsMuted(!isMuted)}
-          className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full hover:bg-white transition-all duration-300 hover:scale-110"
+          className="bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 rounded-full hover:bg-white transition-all duration-300 hover:scale-110"
           aria-label={isMuted ? "Activer le son" : "Désactiver le son"}
         >
-          {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+          {isMuted ? <VolumeX className="w-4 h-4 sm:w-5 sm:h-5" /> : <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />}
         </button>
         <button
-          className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full hover:bg-white transition-all duration-300 hover:scale-110"
+          className="bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 rounded-full hover:bg-white transition-all duration-300 hover:scale-110"
           aria-label="Informations"
         >
-          <Info className="w-5 h-5" />
+          <Info className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
         <button
-          className="bg-white/90 backdrop-blur-sm p-2.5 rounded-full hover:bg-white transition-all duration-300 hover:scale-110"
+          className="bg-white/90 backdrop-blur-sm p-2 sm:p-2.5 rounded-full hover:bg-white transition-all duration-300 hover:scale-110"
           aria-label="Caractéristiques techniques"
         >
-          <Brain className="w-5 h-5" />
+          <Brain className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center space-x-2">
-        <span className="text-white/80 text-sm font-light tracking-wider">FAIRE DÉFILER</span>
-        <ChevronDown className="w-5 h-5 text-white/80 animate-bounce" />
+      <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center space-y-1 sm:space-y-2">
+        <span className="text-white/80 text-xs sm:text-sm font-light tracking-wider">FAIRE DÉFILER</span>
+        <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 text-white/80 animate-bounce" />
       </div>
     </div>
   )
 }
+
+export default HeroSection
 
