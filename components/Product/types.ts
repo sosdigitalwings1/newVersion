@@ -2,7 +2,7 @@ export interface Product {
   id: string;
   name: string;
   images: string[];
-  isNew: boolean;
+  isNew?: boolean;
   price: string;
   description: string;
   keySpecs: {

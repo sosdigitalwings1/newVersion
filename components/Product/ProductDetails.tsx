@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronDown, Heart, Share2, ZoomIn, Clock, Watch, Droplet,
 import { Product } from './types';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
 import { ProductCarousel } from './ProductCarousel';
 import { AddToCartModal } from 'components/AddToCartModalProps';
@@ -21,9 +21,13 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
   const [quantity, setQuantity] = useState(1);
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isWishlistActive, setIsWishlistActive] = useState(false);
   const [showAddToCartModal, setShowAddToCartModal] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
+
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const [isWishlistActive, setIsWishlistActive] = useState(
+    wishlist.some((item) => item.id === product.id)
+  );
   
   const { addToCart } = useCart();
 
@@ -69,7 +73,15 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
     const IconComponent = icons[iconName as keyof typeof icons];
     return IconComponent ? <IconComponent className="w-5 h-5" /> : null;
   };
-
+  const handleWishlistToggle = () => {
+    if (wishlist.some((item) => item.id === product.id)) {
+      console.log("Removing from wishlist:", product.id); // Debugging
+      removeFromWishlist(product.id);
+    } else {
+      console.log("Adding to wishlist:", product); // Debugging
+      addToWishlist(product);
+    }
+  };
   return (
     <div className="min-h-screen bg-white">
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
@@ -225,7 +237,7 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
                   ADD TO CART
                 </button>
               </div>
-              <button
+              {/* <button
                 onClick={() => setIsWishlistActive(!isWishlistActive)}
                 className={`w-full h-12 text-sm tracking-widest font-medium border transition-all duration-300 
                   hover:scale-[1.01] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
@@ -235,7 +247,18 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
                 }`}
               >
                 {isWishlistActive ? 'REMOVE FROM WISHLIST' : 'ADD TO WISHLIST'}
-              </button>
+              </button> */}
+              <button
+        onClick={handleWishlistToggle}
+        className={`w-full h-12 text-sm tracking-widest font-medium border transition-all duration-300 
+          hover:scale-[1.01] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+            isWishlistActive
+              ? 'bg-red-50 border-red-200 text-red-500'
+              : 'hover:bg-gray-50'
+          }`}
+      >
+        {isWishlistActive ? 'REMOVE FROM WISHLIST' : 'ADD TO WISHLIST'}
+      </button>
             </div>
 
             <div className="border-t border-gray-100 pt-8 space-y-3">

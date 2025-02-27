@@ -1,7 +1,7 @@
 "use client"
 
 import { type FC, useEffect, useState, useCallback } from "react"
-import { Search, MapPin, User, ShoppingBag, ChevronDown, X, Menu } from "lucide-react"
+import { Search, MapPin, User, ShoppingBag, ChevronDown, X, Menu, Heart } from "lucide-react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
@@ -135,9 +135,12 @@ export const Header: FC = () => {
               <button onClick={() => setIsSearchOpen(true)} className="hover:opacity-70 transition-opacity">
                 <Search className="w-[18px] h-[18px]" />
               </button>
-              <button className="hover:opacity-70 transition-opacity">
+              <Link href="/favorites" className="hover:opacity-70 transition-opacity">
+                <Heart className="w-[18px] h-[18px]" />
+              </Link>
+              {/* <button className="hover:opacity-70 transition-opacity">
                 <MapPin className="w-[18px] h-[18px]" />
-              </button>
+              </button> */}
               <button onClick={handleProfileClick} className="hover:opacity-70 transition-opacity">
                 <User className="w-[18px] h-[18px]" />
               </button>
