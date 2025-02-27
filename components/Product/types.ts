@@ -15,4 +15,6 @@ export interface Product {
     title: string;
     content: string;
   }[];
+  reference: string;
+  diameter?: string;
 }

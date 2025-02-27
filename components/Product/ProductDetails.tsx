@@ -1,10 +1,12 @@
+"use client"
+
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronDown, Heart, Share2, ZoomIn, Clock, Watch, Droplet, Shield, Plus, Minus } from 'lucide-react';
 import { Product } from './types';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { useCart } from 'context/CartContext';
+import { useCart } from '../../context/CartContext';
 import { ProductCarousel } from './ProductCarousel';
 import { AddToCartModal } from 'components/AddToCartModalProps';
 

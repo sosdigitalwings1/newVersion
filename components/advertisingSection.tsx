@@ -7,7 +7,7 @@ export function AdvertisingSection() {
       <div className="absolute inset-0">
         <div className="relative h-full">
           {/* Dark gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent z-10" />
+          <div className="bg-gradient-to-b from-white to-neutral-50 absolute inset-0 z-10 absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent z-10" />
 
           {/* Background video */}
           <video

@@ -142,15 +142,18 @@
 //       </div>
 //     </div>
 //   )
-// }
+// }"use client"
 
-"use client"
-
-import { useCart } from "../context/CartContext"
-import { Minus, Plus, Trash2 } from "lucide-react"
+import { useCart } from "context/CartContext"
+import { Minus, Plus, X } from "lucide-react"
 import Image from "next/image"
 import { useState, useEffect } from "react"
-import type { CartItem } from "../types/cart"
+import Link from "next/link"
+import { CartItem } from "types/cart"
+import { Button } from "components/ui/button"
+import { FaCcVisa, FaCcMastercard, FaCcPaypal, FaCcApplePay } from "react-icons/fa";
+import { SiAmericanexpress } from "react-icons/si";
+import router from "next/router"
 
 interface CartSummaryProps {
   items: CartItem[]
@@ -172,47 +175,177 @@ export function CartSummary({ items }: CartSummaryProps) {
     updateQuantity(item.product.id, quantity)
   }
 
-  // const total = cartItems.reduce((sum, item) => {
-  //   const price = Number.parseFloat(item.product.price.replace(/[^0-9.]/g, ""))
-  //   return sum + price * item.quantity
-  // }, 0)
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('fr-CA', { 
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(price)
+  }
 
   return (
-    <div>
-      {cartItems.map((item) => (
-        <div key={item.product.id} className="flex items-center justify-between py-2 border-b border-gray-200">
-          <div className="flex items-center">
-            <Image
-              src={item.product.images[0] || "/placeholder.svg"}
-              alt={item.product.name}
-              width={50}
-              height={50}
-              className="rounded-md"
-            />
-            <div className="ml-4">
-              <p className="text-gray-900 font-medium">{item.product.name}</p>
-              <p className="text-sm text-gray-600">Price: ${Number.parseFloat(item.product.price).toFixed(2)} CAD</p>
+    <div className="max-w-[1200px] mx-auto px-4 md:px-8 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <h1 className="text-4xl font-light mb-8 text-[#333]">Mon panier {cartItems.length > 0 && `(${cartItems.length})`}</h1>
+          
+          {cartItems.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-lg text-gray-600 mb-6">Votre panier est vide</p>
+              <Link href="/collection/products" passHref>
+              <Button variant="longines" size="lg">
+                CONTINUER VOS ACHATS
+              </Button>
+            </Link>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {cartItems.map((item) => (
+                <div key={item.product.id} className="bg-white border border-white rounded-lg shadow-md overflow-hidden">
+                  <div className="flex flex-col md:flex-row">
+                    <div className="w-full md:w-[180px] h-[180px] bg-[#f8f8f8] flex items-center justify-center p-4">
+                      <Image
+                        src={item.product.images[0] || "/placeholder.svg"}
+                        alt={item.product.name}
+                        width={140}
+                        height={140}
+                        className="object-contain"
+                      />
+                    </div>
+                    <div className="flex-1 p-6">
+                      <div className="flex justify-between">
+                        <div>
+                          <h3 className="font-light text-lg uppercase tracking-wide text-[#333]">{item.product.name}</h3>
+                          {item.product.reference && (
+                            <p className="text-sm text-gray-500 mt-1">{item.product.reference}</p>
+                          )}
+                          
+                        </div>
+                        <button 
+                          onClick={() => handleRemoveFromCart(item)}
+                          className="text-gray-400 hover:text-gray-600"
+                          aria-label="Remove item"
+                        >
+                          <X size={20} />
+                        </button>
+                      </div>
+                      
+                      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mt-6">
+                        <div className="flex items-center border border-gray-300 rounded-sm mb-4 md:mb-0 overflow-hidden">
+                          <button 
+                            onClick={() => handleUpdateQuantity(item, item.quantity - 1)} 
+                            disabled={item.quantity <= 1}
+                            className="px-3 py-2 text-gray-500 hover:text-gray-700 disabled:opacity-50"
+                            aria-label="Decrease quantity"
+                          >
+                            <Minus size={16} />
+                          </button>
+                          <span className="w-10 text-center font-light">{item.quantity}</span>
+                          <button 
+                            onClick={() => handleUpdateQuantity(item, item.quantity + 1)}
+                            className="px-3 py-2 text-gray-500 hover:text-gray-700"
+                            aria-label="Increase quantity"
+                          >
+                            <Plus size={16} />
+                          </button>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-lg font-light">
+                            {formatPrice(Number.parseFloat(item.product.price.replace(/[^0-9.]/g, ""))) + " CAD"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        
+        <div className="lg:col-span-1">
+          <div className="bg-white border border-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-light mb-6">Résumé</h2>
+            
+            <div className="space-y-4 border-border-white pb-6">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Sous-total</span>
+                <span>{formatPrice(getSubtotal())} CAD</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Livraison</span>
+                <span className="text-green-600">Gratuit</span>
+              </div>
+            </div>
+            
+            <div className="flex justify-between py-6 border-b border-gray-300">
+              <span className="font-medium">Total</span>
+              <span className="font-medium">{formatPrice(getTotal())} CAD</span>
+            </div>
+            
+            <div className="mt-6">
+              <Button 
+                variant="longines" 
+                size="lg" 
+                className="w-full"
+                disabled={cartItems.length === 0}
+              >
+                Paiement
+              </Button>
+            </div>
+            
+            <div className="mt-8 space-y-4">
+              <div className="flex items-center gap-3 text-sm text-gray-600">
+                <div className="w-5 h-5 flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                </div>
+                <span>Swiss Made</span>
+              </div>
+              
+              <div className="flex items-center gap-3 text-sm text-gray-600">
+                <div className="w-5 h-5 flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                    <rect width="16" height="13" x="4" y="5" rx="2" />
+                    <path d="M16 2v3M8 2v3M3 10h18" />
+                  </svg>
+                </div>
+                <span>Livraison & retours offerts</span>
+              </div>
+              
+              <div className="flex items-center gap-3 text-sm text-gray-600">
+                <div className="w-5 h-5 flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                </div>
+                <span>Garantie LONGINES</span>
+              </div>
+              
+              <div className="flex items-center gap-3 text-sm text-gray-600">
+                <div className="w-5 h-5 flex-shrink-0">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </div>
+                <span>Paiement sécurisé</span>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex flex-wrap gap-2 justify-center">
+            <FaCcVisa className="w-10 h-6 text-gray-600" />
+            <FaCcMastercard className="w-10 h-6 text-gray-600" />
+            <SiAmericanexpress className="w-10 h-6 text-gray-600" />
+            <FaCcPaypal className="w-10 h-6 text-gray-600" />
+            <FaCcMastercard className="w-10 h-6 text-gray-600" />
+            <FaCcApplePay className="w-10 h-6 text-gray-600" />
             </div>
           </div>
-          <div className="flex items-center">
-            <button onClick={() => handleUpdateQuantity(item, item.quantity - 1)} disabled={item.quantity === 1}>
-              <Minus className="h-5 w-5 text-gray-600 hover:text-red-500 cursor-pointer" />
-            </button>
-            <span className="mx-2">{item.quantity}</span>
-            <button onClick={() => handleUpdateQuantity(item, item.quantity + 1)}>
-              <Plus className="h-5 w-5 text-gray-600 hover:text-green-500 cursor-pointer" />
-            </button>
-            <button onClick={() => handleRemoveFromCart(item)} className="ml-2">
-              <Trash2 className="h-5 w-5 text-gray-600 hover:text-red-500 cursor-pointer" />
-            </button>
-          </div>
         </div>
-      ))}
-      <div className="mt-4">
-        <p className="text-gray-900 font-medium text-lg">Subtotal: ${getSubtotal().toFixed(2)}</p>
-        <p className="text-gray-900 font-medium text-lg">Total: ${getTotal().toFixed(2)}</p>
       </div>
     </div>
   )
 }
-

@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+// tailwind.config.js
+const defaultTheme = require('tailwindcss/defaultTheme'); 
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -13,6 +16,10 @@ module.exports = {
       padding: "2rem",
       screens: {
         "2xl": "1400px",
+      },
+      fontFamily: {
+        sans: ['LonginesSansRS', ...defaultTheme.fontFamily.sans],
+        serif: ['LonginesSerifRS', ...defaultTheme.fontFamily.serif],
       },
     },
     extend: {

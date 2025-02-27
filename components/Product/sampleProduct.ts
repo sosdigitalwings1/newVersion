@@ -57,7 +57,9 @@ export const sampleProducts: Product[] = [ // Change to an array
                 title: "Service client",
                 content: "Informations sur le service après-vente..."
             }
-        ]
+        ],
+        reference: "L2.909.4.92.0",
+        diameter: "40.00 mm"
     },
     // Add more products here as needed
     {
@@ -113,7 +115,9 @@ export const sampleProducts: Product[] = [ // Change to an array
                 title: "Service client",
                 content: "Informations sur le service après-vente..."
             }
-        ]
+        ],
+        reference: "L2.909.4.92.0",
+        diameter: "40.00 mm"
     },
     {
         id: "3",
@@ -169,7 +173,9 @@ export const sampleProducts: Product[] = [ // Change to an array
                 title: "Service client",
                 content: "Informations sur le service après-vente..."
             }
-        ]
+        ],
+        reference: "L2.909.4.92.0",
+        diameter: "40.00 mm"
     },
     // Add more products here as needed
     {
@@ -225,7 +231,9 @@ export const sampleProducts: Product[] = [ // Change to an array
                 title: "Service client",
                 content: "Informations sur le service après-vente..."
             }
-        ]
+        ],
+        reference: "L2.909.4.92.0",
+        diameter: "40.00 mm"
     },
     {
         id: "5",
@@ -280,7 +288,9 @@ export const sampleProducts: Product[] = [ // Change to an array
                 title: "Service client",
                 content: "Informations sur le service après-vente..."
             }
-        ]
+        ],
+        reference: "L2.909.4.92.0",
+        diameter: "40.00 mm"
     },
     {
         id: "6",
@@ -335,6 +345,8 @@ export const sampleProducts: Product[] = [ // Change to an array
                 title: "Service client",
                 content: "Informations sur le service après-vente..."
             }
-        ]
+        ],
+        reference: "L2.909.4.92.0",
+        diameter: "40.00 mm"
     },
 ];

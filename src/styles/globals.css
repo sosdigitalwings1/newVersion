@@ -71,6 +71,21 @@
     --chart-5: 340 75% 55%;
   } */
 }
+@font-face {
+  font-family: 'LonginesSansRS';
+  src: url('/fonts/LonginesSansRS-Regular.woff2') format('woff2'),
+       url('/fonts/LonginesSansRS-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LonginesSerifRS';
+  src: url('/fonts/LonginesSerifRS-Regular.woff2') format('woff2'),
+       url('/fonts/LonginesSerifRS-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
 
 @layer base {
   * {
@@ -78,6 +93,7 @@
     @apply border-border;
   }
   body {
+    overflow-x: hidden;
     @apply bg-background text-foreground;
     @apply antialiased;
     /* overflow-x: hidden; */

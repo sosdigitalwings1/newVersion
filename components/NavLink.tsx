@@ -13,7 +13,7 @@ export interface NavLinkProps {
 export const NavLink: FC<NavLinkProps> = ({ href, children, className = "", isWhiteBackground = false }) => (
   <Link
     href={href}
-    className={`${isWhiteBackground ? "text-[#03224c] font-bold hover:text-blue-500 transition-colors duration-300" : "text-white"}
+    className={`${isWhiteBackground ? "text-[#03224c] font-bold hover:text-blue-500 transition-colors duration-300" : "text-black"}
     font-custom group-hover:text-[#03224c] hover:text-blue-500 transition-colors duration-300 ${className}`}
   >
     {children}

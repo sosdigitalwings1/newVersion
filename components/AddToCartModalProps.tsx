@@ -8,7 +8,6 @@ interface AddToCartModalProps {
   product: Product;
   isOpen: boolean;
   onClose: () => void;
-
   onContinueShopping: () => void;
 }
 
@@ -51,6 +50,8 @@ export function AddToCartModal({
               <Image
                 src={product.images[0]}
                 alt={product.name}
+                width={200}
+                height={200}
                 className="w-full h-full object-cover"
               />
             </div>
