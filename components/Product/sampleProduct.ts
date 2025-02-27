@@ -116,8 +116,7 @@ export const sampleProducts: Product[] = [ // Change to an array
                 content: "Informations sur le service après-vente..."
             }
         ],
-        reference: "L2.909.4.92.0",
-        diameter: "40.00 mm"
+        reference: "L2.909.4.92.0"
     },
     {
         id: "3",
