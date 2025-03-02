@@ -11,6 +11,7 @@ import {
   Menu,
   Heart,
 } from "lucide-react";
+import { useCart } from "context/CartContext" 
 import { useWishlist } from "context/WishlistContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -33,6 +34,7 @@ export const Header: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { wishlist } = useWishlist();
+  const { items } = useCart() 
 
   useEffect(() => {
     setIsClient(true);
@@ -184,12 +186,26 @@ export const Header: FC = () => {
               >
                 <User className="w-[18px] h-[18px]" />
               </button>
-              <button className="relative hover:opacity-70 transition-opacity">
+              {/* <button className="relative hover:opacity-70 transition-opacity">
                 <ShoppingBag className="w-[18px] h-[18px]" />
                 <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] rounded-full w-[16px] h-[16px] flex items-center justify-center">
                   1
                 </span>
-              </button>
+              </button> */}
+              <Link 
+                href="/cart" 
+                className="relative hover:opacity-70 transition-opacity"
+                aria-label="View shopping cart"
+              >
+                <ShoppingBag className="w-[18px] h-[18px]" />
+                {items.length > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] 
+                             rounded-full w-[16px] h-[16px] flex items-center justify-center">
+                    {items.length}
+                  </span>
+                )}
+              </Link>
+              
             </div>
           </div>
         </div>

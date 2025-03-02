@@ -22,7 +22,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-[#f5f5f5]">
       <Head>
-        <title>Longines - Mon panier</title>
+        <title>sos - Mon panier</title>
         <meta name="description" content="Votre panier d'achats Longines" />
       </Head>
       
