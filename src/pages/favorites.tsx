@@ -41,23 +41,25 @@ export default function FavoritesPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {wishlist.map((product) => (
-              <div key={product.id} className="group relative">
-                <div className="relative aspect-[4/5] bg-gray-50 rounded-lg overflow-hidden">
-                  <Image
-                    src={product.images[0]}
-                    alt={product.name}
-                    width={400}
-                    height={500}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <button
-                    onClick={() => removeFromWishlist(product.id)}
-                    className="absolute top-4 right-4 bg-white/90 p-2 rounded-full shadow-md backdrop-blur-sm 
-                      hover:bg-white transition-all duration-300 hover:scale-105"
-                    aria-label="Remove from favorites"
-                  >
-                    <Heart className="w-4 h-4 fill-current text-red-500" />
-                  </button>
+          <div key={product.id} className="group relative">
+            <div className="relative aspect-[4/5] bg-gray-50 rounded-lg overflow-hidden">
+              <Image
+                src={product.images[0]}
+                alt={product.name}
+                width={400}
+                height={500}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                priority={false}
+              />
+              <button
+                onClick={() => removeFromWishlist(product.id)}
+                className="absolute top-4 right-4 bg-white/90 p-2 rounded-full shadow-md backdrop-blur-sm 
+                          hover:bg-white transition-all duration-300 hover:scale-105"
+                aria-label="Remove from favorites"
+              >
+                <Heart className="w-4 h-4 fill-current text-red-500" />
+              </button>
                 </div>
                 <div className="mt-4 space-y-2">
                   <h2 className="text-lg font-medium tracking-wide">{product.name}</h2>

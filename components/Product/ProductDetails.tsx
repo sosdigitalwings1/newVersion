@@ -53,6 +53,11 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
   }, []);
 
   useEffect(() => {
+    setIsWishlistActive(wishlist.some(item => item.id === product.id));
+  }, [wishlist, product.id]);
+
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isZoomed) {
         setIsZoomed(false);
@@ -73,15 +78,24 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
     const IconComponent = icons[iconName as keyof typeof icons];
     return IconComponent ? <IconComponent className="w-5 h-5" /> : null;
   };
-  const handleWishlistToggle = () => {
-    if (wishlist.some((item) => item.id === product.id)) {
-      console.log("Removing from wishlist:", product.id); // Debugging
+  // const handleWishlistToggle = () => {
+  //   if (wishlist.some((item) => item.id === product.id)) {
+  //     console.log("Removing from wishlist:", product.id); // Debugging
+  //     removeFromWishlist(product.id);
+  //   } else {
+  //     console.log("Adding to wishlist:", product); // Debugging
+  //     addToWishlist(product);
+  //   }
+  // };
+  const handleWishlistToggle = useCallback(() => {
+    if (isWishlistActive) {
       removeFromWishlist(product.id);
     } else {
-      console.log("Adding to wishlist:", product); // Debugging
       addToWishlist(product);
     }
-  };
+  }, [isWishlistActive, product, addToWishlist, removeFromWishlist]);
+
+
   return (
     <div className="min-h-screen bg-white">
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-100">
@@ -96,7 +110,7 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
               <span className="text-sm tracking-wide">Back to collection</span>
             </Link>
             <div className="flex items-center space-x-4">
-              <button
+              {/* <button
                 onClick={() => setIsWishlistActive(!isWishlistActive)}
                 className={`group p-2 rounded-full transition-all duration-300 ${
                   isWishlistActive ? 'bg-red-50 text-red-500' : 'hover:bg-gray-50'
@@ -105,7 +119,16 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
                 aria-pressed={isWishlistActive}
               >
                 <Heart className={`w-4 h-4 transition-transform group-hover:scale-110 ${isWishlistActive ? 'fill-current' : ''}`} />
-              </button>
+              </button> */}
+              <button
+              onClick={handleWishlistToggle}
+              className={`group p-2 rounded-full transition-all duration-300 ${
+                isWishlistActive ? 'bg-red-50 text-red-500' : 'hover:bg-gray-50'
+              }`}
+            >
+              <Heart className={`w-4 h-4 transition-transform group-hover:scale-110 ${isWishlistActive ? 'fill-current' : ''}`} />
+            </button>
+
               <button 
                 className="group p-2 rounded-full hover:bg-gray-50 transition-all duration-300"
                 aria-label="Share product"
@@ -248,7 +271,19 @@ export function ProductDetails({ product, relatedProducts }: ProductDetailsProps
               >
                 {isWishlistActive ? 'REMOVE FROM WISHLIST' : 'ADD TO WISHLIST'}
               </button> */}
-              <button
+
+              {/* <button
+        onClick={handleWishlistToggle}
+        className={`w-full h-12 text-sm tracking-widest font-medium border transition-all duration-300 
+          hover:scale-[1.01] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+            isWishlistActive
+              ? 'bg-red-50 border-red-200 text-red-500'
+              : 'hover:bg-gray-50'
+          }`}
+      >
+        {isWishlistActive ? 'REMOVE FROM WISHLIST' : 'ADD TO WISHLIST'}
+      </button> */}
+      <button
         onClick={handleWishlistToggle}
         className={`w-full h-12 text-sm tracking-widest font-medium border transition-all duration-300 
           hover:scale-[1.01] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
