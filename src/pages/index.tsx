@@ -135,7 +135,7 @@ import router from "next/router";
         <GenderCategories  />
         <AdvertisingSection />
         
-        <NewsSection />
+        {/* <NewsSection /> */}
           
       <Footer />
     </div>
