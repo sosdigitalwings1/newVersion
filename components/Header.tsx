@@ -11,7 +11,7 @@ import {
   Menu,
   Heart,
 } from "lucide-react";
-import { useCart } from "context/CartContext" 
+import { useCart } from "context/CartContext";
 import { useWishlist } from "context/WishlistContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -34,13 +34,12 @@ export const Header: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { wishlist } = useWishlist();
-  const { items } = useCart() 
+  const { items } = useCart();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // for the sign-up and sign-in part
   const handleProfileClick = () => {
     if (isClient) {
       const isRegistered = localStorage.getItem("userToken");
@@ -51,46 +50,40 @@ export const Header: FC = () => {
       }
     }
   };
-  // controlling the header (+ scrolling effect ) :
-  const controlHeader = () => {
+
+  const controlHeader = useCallback(() => {
     if (typeof window !== "undefined") {
       const heroSectionHeight = window.innerHeight - 108;
       const currentScroll = window.scrollY;
       if (currentScroll < lastScrollY) {
-        // Scrolling up
         setShowHeader(true);
         if (currentScroll < heroSectionHeight) {
-          // If in the hero section
-          setBgColor("bg-black"); // Changed to a darker shade for better contrast
+          setBgColor("bg-black");
           setTextColor("text-white");
         } else {
-          // Scrolling past hero section
-          setBgColor("bg-black"); // Changed to a darker shade for better contrast
+          setBgColor("bg-black");
           setTextColor("text-white");
         }
       } else {
-        // Scrolling down
         setShowHeader(false);
         if (currentScroll < heroSectionHeight) {
-          // If still in the hero section
-          setBgColor("bg-black"); // Changed to a darker shade for better contrast
+          setBgColor("bg-black");
           setTextColor("text-white");
         } else {
-          // Scrolling past the hero section
-          setBgColor("bg-black"); // Changed to a darker shade for better contrast
+          setBgColor("bg-black");
           setTextColor("text-white");
         }
       }
       setLastScrollY(currentScroll);
     }
-  };
-  //
+  }, [lastScrollY]);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("scroll", controlHeader);
       return () => window.removeEventListener("scroll", controlHeader);
     }
-  }, [lastScrollY, controlHeader]); // Added controlHeader to dependencies
+  }, [controlHeader]);
 
   return (
     <header
@@ -160,52 +153,35 @@ export const Header: FC = () => {
               >
                 <Search className="w-[18px] h-[18px]" />
               </button>
-              {/* <Link href="/favorites" className="hover:opacity-70 transition-opacity">
-                <Heart className="w-[18px] h-[18px]" />
-              </Link> */}
               <Link
                 href="/favorites"
                 className="relative hover:opacity-70 transition-opacity"
               >
                 <Heart className="w-[18px] h-[18px]" />
                 {wishlist.length > 0 && (
-                  <span
-                    className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] 
-                         rounded-full w-[16px] h-[16px] flex items-center justify-center"
-                  >
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] rounded-full w-[16px] h-[16px] flex items-center justify-center">
                     {wishlist.length}
                   </span>
                 )}
               </Link>
-              {/* <button className="hover:opacity-70 transition-opacity">
-                <MapPin className="w-[18px] h-[18px]" />
-              </button> */}
               <button
                 onClick={handleProfileClick}
                 className="hover:opacity-70 transition-opacity"
               >
                 <User className="w-[18px] h-[18px]" />
               </button>
-              {/* <button className="relative hover:opacity-70 transition-opacity">
-                <ShoppingBag className="w-[18px] h-[18px]" />
-                <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] rounded-full w-[16px] h-[16px] flex items-center justify-center">
-                  1
-                </span>
-              </button> */}
-              <Link 
-                href="/cart" 
+              <Link
+                href="/cart"
                 className="relative hover:opacity-70 transition-opacity"
                 aria-label="View shopping cart"
               >
                 <ShoppingBag className="w-[18px] h-[18px]" />
                 {items.length > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] 
-                             rounded-full w-[16px] h-[16px] flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] rounded-full w-[16px] h-[16px] flex items-center justify-center">
                     {items.length}
                   </span>
                 )}
               </Link>
-              
             </div>
           </div>
         </div>

@@ -236,6 +236,7 @@
 // //   )
 // // }
 
+
 "use client";
 
 import Head from "next/head";
@@ -262,12 +263,35 @@ export default function WatchCollection() {
     priceRange: [0, 10000],
   });
 
+  const [isClient, setIsClient] = useState(false);
+
   useEffect(() => {
+    setIsClient(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Close filters when clicking outside (desktop/tablet)
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       filtersRef.current &&
+  //       !filtersRef.current.contains(event.target as Node)
+  //     ) {
+  //       setIsFiltersOpen(false);
+  //     }
+  //   };
+
+  //   if (isFiltersOpen) {
+  //     document.addEventListener("mousedown", handleClickOutside);
+  //   }
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [isFiltersOpen]);
 
   const filteredWatches = watches.filter((watch) => {
     if (
@@ -314,10 +338,10 @@ export default function WatchCollection() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           <div className="absolute inset-0 flex items-center justify-center text-white">
             <div className="text-center transform translate-y-0 transition-transform duration-1000">
-              <h1 className="text-6xl font-extralight mb-6 tracking-wider">
+              <h1 className="text-4xl md:text-6xl font-extralight mb-6 tracking-wider">
                 SOS SPIRIT FLYBACK
               </h1>
-              <p className="text-xl font-light max-w-2xl mx-auto px-4">
+              <p className="text-lg md:text-xl font-light max-w-2xl mx-auto px-4">
                 Une nouvelle ère de l'horlogerie en titane grade 5, alliant
                 légèreté exceptionnelle et durabilité incomparable.
               </p>
@@ -326,31 +350,41 @@ export default function WatchCollection() {
         </div>
 
         {/* Collection Content */}
-        <div className="max-w-7xl mx-auto px-4 py-16 flex">
+        <div className="max-w-7xl mx-auto px-4 py-16 flex flex-col md:flex-row">
           {/* Filters Sidebar */}
-          <div
-            className={`w-64 mr-8 transition-all duration-300 ${
-              isFiltersOpen ? "block" : "hidden"
-            }`}
-          >
-            <Filters
-              filters={filters}
-              setFilters={setFilters}
-              isOpen={isFiltersOpen}
-              onClose={() => setIsFiltersOpen(false)}
-            />
-          </div>
+          {isClient && (
+            <div
+              className={`fixed md:fixed inset-0 z-40 bg-white md:bg-white/95 backdrop-blur-sm transition-transform duration-300 ${
+                isFiltersOpen ? "translate-x-0" : "-translate-x-full"
+              }`}
+              style={{
+                top: "92px",
+                height: "calc(100vh - 92px)",
+                width: "16rem",
+              }}
+            >
+              <div className="w-full h-full p-6 border-r border-gray-200 overflow-y-auto">
+                <Filters
+                  filters={filters}
+                  setFilters={setFilters}
+                  isOpen={isFiltersOpen}
+                  onClose={() => setIsFiltersOpen(false)} // Pass close handler
+                />
+              </div>
+            </div>
+          )}
 
           {/* Main Content */}
           <div className="flex-1">
             <div className="flex justify-between items-center mb-12">
               <div>
-                <h2 className="text-3xl font-extralight mb-3">LA COLLECTION</h2>
+                <h2 className="text-2xl md:text-3xl font-extralight mb-3">LA COLLECTION</h2>
                 <p className="text-gray-600">{filteredWatches.length} modèles</p>
               </div>
+              {/* Toggle Button */}
               <button
-                onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-                className="group flex items-center space-x-3 px-8 py-4 border border-black hover:bg-black transition-all duration-300"
+                onClick={() => setIsFiltersOpen(!isFiltersOpen)} // Simple toggle
+                className="group flex items-center space-x-3 px-4 py-2 border border-black hover:bg-black transition-all duration-300"
               >
                 <SlidersHorizontal className="h-5 w-5 group-hover:text-white transition-colors" />
                 <span className="text-sm tracking-wider group-hover:text-white transition-colors">
@@ -366,7 +400,7 @@ export default function WatchCollection() {
         </div>
 
         {/* Featured Section */}
-        <section className="bg-gray-50 py-24">
+        <section className="bg-gray-50 py-12 md:py-24">
           <ProductCarousel products={sampleProducts} />
         </section>
       </main>
