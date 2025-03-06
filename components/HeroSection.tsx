@@ -291,7 +291,7 @@ const heroSlides: HeroSlide[] = [
     product: sampleProducts[0],
   },
   {
-    video: "/assets/videos/Avert.mp4",
+    video: "/assets/videos/Advert1.mp4",
     product: sampleProducts[1],
   },
 ]
