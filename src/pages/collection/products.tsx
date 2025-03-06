@@ -349,7 +349,7 @@ export default function WatchCollection() {
           <ProductCarousel products={sampleProducts} />
         </section>
       </main>
-
+{/* .. */}
       <Footer />
     </div>
   );
