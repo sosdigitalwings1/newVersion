@@ -236,7 +236,6 @@
 // //   )
 // // }
 
-
 "use client";
 
 import Head from "next/head";
@@ -263,35 +262,12 @@ export default function WatchCollection() {
     priceRange: [0, 10000],
   });
 
-  const [isClient, setIsClient] = useState(false);
-
   useEffect(() => {
-    setIsClient(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
   }, []);
-
-  // Close filters when clicking outside (desktop/tablet)
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (
-  //       filtersRef.current &&
-  //       !filtersRef.current.contains(event.target as Node)
-  //     ) {
-  //       setIsFiltersOpen(false);
-  //     }
-  //   };
-
-  //   if (isFiltersOpen) {
-  //     document.addEventListener("mousedown", handleClickOutside);
-  //   }
-
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [isFiltersOpen]);
 
   const filteredWatches = watches.filter((watch) => {
     if (
@@ -310,11 +286,7 @@ export default function WatchCollection() {
   });
 
   return (
-    <div
-      className={`min-h-screen bg-white transition-opacity duration-500 ${
-        isLoading ? "opacity-0" : "opacity-100"
-      }`}
-    >
+    <div className={`min-h-screen bg-white transition-opacity duration-500 ${isLoading ? "opacity-0" : "opacity-100"}`}>
       <Head>
         <title>Collection SOS Spirit Flyback | Longines</title>
         <meta
@@ -326,8 +298,7 @@ export default function WatchCollection() {
       <Header />
 
       <main className="relative">
-        {/* Hero Banner */}
-        <div className="relative h-[70vh] bg-gray-900 overflow-hidden">
+        <div className="relative h-[50vh] md:h-[70vh] bg-gray-900 overflow-hidden">
           <Image
             src="/assets/shop.webp"
             alt="Collection Banner"
@@ -337,70 +308,44 @@ export default function WatchCollection() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           <div className="absolute inset-0 flex items-center justify-center text-white">
-            <div className="text-center transform translate-y-0 transition-transform duration-1000">
-              <h1 className="text-4xl md:text-6xl font-extralight mb-6 tracking-wider">
+            <div className="text-center px-4">
+              <h1 className="text-4xl md:text-6xl font-extralight mb-4 md:mb-6 tracking-wider">
                 SOS SPIRIT FLYBACK
               </h1>
-              <p className="text-lg md:text-xl font-light max-w-2xl mx-auto px-4">
-                Une nouvelle ère de l'horlogerie en titane grade 5, alliant
-                légèreté exceptionnelle et durabilité incomparable.
+              <p className="text-lg md:text-xl font-light max-w-2xl mx-auto">
+                Une nouvelle ère de l'horlogerie en titane grade 5, alliant légèreté exceptionnelle et durabilité incomparable.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Collection Content */}
-        <div className="max-w-7xl mx-auto px-4 py-16 flex flex-col md:flex-row">
-          {/* Filters Sidebar */}
-          {isClient && (
-            <div
-              className={`fixed md:fixed inset-0 z-40 bg-white md:bg-white/95 backdrop-blur-sm transition-transform duration-300 ${
-                isFiltersOpen ? "translate-x-0" : "-translate-x-full"
-              }`}
-              style={{
-                top: "92px",
-                height: "calc(100vh - 92px)",
-                width: "16rem",
-              }}
-            >
-              <div className="w-full h-full p-6 border-r border-gray-200 overflow-y-auto">
-                <Filters
-                  filters={filters}
-                  setFilters={setFilters}
-                  isOpen={isFiltersOpen}
-                  onClose={() => setIsFiltersOpen(false)} // Pass close handler
-                />
-              </div>
-            </div>
-          )}
+        <div className="max-w-7xl mx-auto px-4 py-12 flex flex-col md:flex-row">
+          <div className={`fixed md:static inset-0 bg-white md:bg-transparent md:w-64 z-50 p-6 transition-transform transform ${isFiltersOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}>
+            <Filters
+              filters={filters}
+              setFilters={setFilters}
+              isOpen={isFiltersOpen}
+              onClose={() => setIsFiltersOpen(false)}
+            />
+          </div>
 
-          {/* Main Content */}
           <div className="flex-1">
-            <div className="flex justify-between items-center mb-12">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-extralight mb-3">LA COLLECTION</h2>
-                <p className="text-gray-600">{filteredWatches.length} modèles</p>
-              </div>
-              {/* Toggle Button */}
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-extralight">LA COLLECTION</h2>
               <button
-                onClick={() => setIsFiltersOpen(!isFiltersOpen)} // Simple toggle
-                className="group flex items-center space-x-3 px-4 py-2 border border-black hover:bg-black transition-all duration-300"
+                onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+                className="md:hidden flex items-center space-x-3 px-4 py-2 border border-black hover:bg-black transition-all duration-300"
               >
-                <SlidersHorizontal className="h-5 w-5 group-hover:text-white transition-colors" />
-                <span className="text-sm tracking-wider group-hover:text-white transition-colors">
-                  FILTRES
-                </span>
+                <SlidersHorizontal className="h-5 w-5" />
+                <span className="text-sm">Filtres</span>
               </button>
             </div>
 
-            <div className="opacity-0 animate-fade-in">
-              <ProductGrid watches={filteredWatches} />
-            </div>
+            <ProductGrid watches={filteredWatches} />
           </div>
         </div>
 
-        {/* Featured Section */}
-        <section className="bg-gray-50 py-12 md:py-24">
+        <section className="bg-gray-50 py-16">
           <ProductCarousel products={sampleProducts} />
         </section>
       </main>
